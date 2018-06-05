@@ -1,0 +1,31 @@
+###################### Metricbeat Overview#######################
+
+
+Metricbeat is a lightweight shipper that you can install on your servers to periodically collect metrics from the operating system and from services running on the server. Metricbeat takes the metrics and statistics that it collects and ships them to the output that you specify, such as Elasticsearch or Logstash.
+
+Metricbeat helps you monitor your servers by collecting metrics from the system and services running on the server.
+
+Metricbeat can insert the collected metrics directly into Elasticsearch or send them to Logstash, Redis, or Kafka.
+
+
+###################### Install Metricbeat for Ubuntu #######################
+
+curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-6.1.1-amd64.deb
+
+sudo dpkg -i metricbeat-6.1.1-amd64.deb
+
+
+######################  Config Metricbeat #######################
+
+
+For rpm and deb, you’ll find the configuration file at /etc/metricbeat/metricbeat.yml
+
+
+Add following line in /etc/metricbeat/metricbeat.yml
+
+setup.dashboards.enabled: true
+
+
+###################### Start Metricbeat #######################
+
+systemctl start metricbeat

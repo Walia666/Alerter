@@ -1,0 +1,406 @@
+<!doctype html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-3.2.1.js"  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static "application/js/systemlog.js" %}" type="text/javascript"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<title>Set Alert</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="script/css/bootstrap-theme.min.css">
+<script src="script/js/jquery.min.js"></script>
+<script src="script/js/bootstrap.min.js"></script> 
+</head>
+<body>
+<header>
+  <div class="content clearfix">
+    <div class="logo_inner"><img src="images/logo_inner.png" width="100%" alt=""/></div>
+    <div class="right_sec">Welcome shopclues <br>
+      <a href="home.php?logout">Logout</a></div>
+  </div>
+</header>
+<section class="app_name"> 
+  <div class="content">
+    <h1>Logger Notification Panel</h1>
+  </div>
+</section>
+<section class="con_area clearfix">
+ <div class="content">
+    <div class="tabs">
+      <ul>
+	 <li><a href="/application/test/">Applog Alert</a></li>
+        <li class="active"><a href="/application/general/">Systemlog Alert</a></li>
+        <li><a href="/application/timeseries/" title="Time-Series alert will notify based on log trend(previous logs with same time-frame)">Time Series Alert</a></li>
+        <li><a href="/application/modify/">Show/Modify</a></li>
+        <li><a href="/application/csv">Generate CSV</a></li>
+      </ul>
+    </div>
+<div class="alert_box">
+      <div class="col-xs-12">
+        <form id="validate_log_type_form"  name="listform" action="/application/test/" method="POST" onsubmit="return log_type_validate()"> {% csrf_token %}
+	   
+	   <select id="log_type_id" name="log_type_name" class="change_select" onchange="log_type_validate()" >
+		<option value="">Select Log Type</option>
+		<option value="systemlog" >System Log</option>
+		<!--<option value="" >----</option>-->
+	    </select>
+                  </form>
+      </div>
+	<form id="submit_form" action="/application/test/" method="post" onsubmit="return validateform()"> {% csrf_token %}
+      <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+           <label><span>*</span>Log index</label>
+          </div>
+          <div class="col-xs-15">
+            <select  name="log_index_name" id="log_index_id"  onchange="load_fields('11','3')" />
+                                <option value="">Select Log index</option>
+		            </select>
+	  </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+	 <label><span>*</span>Alert Name</label>
+          </div>
+          <div class="col-xs-15">
+            <input type="text" name="other_alert_name" id="alert_name_id"placeholder="Enter Alert name" >
+          </div>
+        </div>
+      </div>
+<div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+                 <label>Field1</label>
+          </div>
+        <div class="col-xs-3">
+                <select  name="other_field1_select" id="other_field1_select_id" />
+                                <option value="">Select index</option>
+                        </select>
+
+          </div>
+          <div class="col-xs-3">
+            <input type="text" name="other_field1_name" id="other_field1_id" placeholder="Enter field 1" >
+          </div>
+                <div class="col-xs-14">
+                <select  name="other_field1_logical_name" id="field1_logical"   />
+                        <option value="">Logical Operator</option>
+                        <option value="AND">AND</option>
+                        <option value="NOT">NOT</option>
+                        <option value="OR">OR</option>
+                </select>
+	
+	
+	</div>
+        </div>
+
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+          
+	         <label>Field2</label>
+          </div>
+          <div class="col-xs-3">
+                <select  name="other_field2_select" id="other_field2_select_id" />
+                                <option value="">Select index</option>
+                        </select>
+
+          </div>
+        <div class="col-xs-3">
+            <input type="text" name="other_field2_name" id="other_field2_id" placeholder="Enter field 2">
+          </div>
+                <div class="col-xs-14">
+                <select  name="other_field2_logical_name" id="field2_logical"   />
+                        <option value="">Logical Operator</option>
+                        <option value="AND">AND</option>
+                        <option value="NOT">NOT</option>
+                        <option value="OR">OR</option>
+                </select>
+
+	</div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+       <!-- <div class="col-xs-6" title="For wildcard filter. Do not select field which has integer datatype. e.g. Response or time . Use * for multiple character and ? for single character in wildcard. e.g  *vend?r*">-->
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+		        <label>Field3</label>
+          </div>
+        <div class="col-xs-3">
+                <select  name="other_field3_select" id="other_field3_select_id" />
+                                <option value="">Select index</option>
+                        </select>
+
+          </div>
+          <div class="col-xs-3">
+           <input type="text" name="other_field3_name" id="other_field3_id" placeholder="Enter field 3">
+          </div>
+            <div class="col-xs-14">
+                <select  name="other_field3_logical_name" id="field3_logical"   />
+                        <option value="">Logical Operator</option>
+                        <option value="AND">AND</option>
+                        <option value="NOT">NOT</option>
+                        <option value="OR">OR</option>
+                </select>
+	          </div>
+        </div>
+	<!-- <div class="col-xs-6" title="For wildcard filter. Do not select field which has integer datatype. e.g. Response or time . Use * for multiple character and ? for single character in wildcard. e.g *vend?r*">-->
+	<div class="col-xs-6">
+          <div class="col-xs-13">
+		 <label>Field4</label>
+          </div>
+        <div class="col-xs-3">
+                <select  name="other_field4_select" id="other_field4_select_id" />
+                                <option value="">Select index</option>
+                        </select>
+
+          </div>
+          <div class="col-xs-3">
+            <input type="text" name="other_field4_name" id="other_field4_id" placeholder="Enter field 4">
+          </div>
+                <div class="col-xs-14">
+                <select  name="other_field4_logical_name" id="field4_logical"   />
+                        <option value="">Logical Operator</option>
+                        <option value="AND">AND</option>
+                        <option value="NOT">NOT</option>
+                        <option value="OR">OR</option>
+                </select>
+            </div>
+        </div>
+      </div>
+        
+	        <div class="col-xs-12" id="rm_div">
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+                          <label><span>*</span>Operator</label>
+          </div>
+          <div class="col-xs-15">
+            <select name="conditional_operator" id="conditional_operator_id" placeholder="Select Operator">
+                            <option value="">Select Operator </option>
+                            <option value="=">Equals to (=)</option>
+                            <option value="<">Less than (<)</option>
+                            <option value=">">Greater than (>)</option>
+                            <option value="<=">Less than equal to (<=)</option>
+                            <option value=">=">Greater than equal to (>=)</option>
+                </select>
+ 
+
+
+	</div>
+        </div>
+
+
+
+	<div class="col-xs-6">
+          <div class="col-xs-13">
+		<label><span>*</span>Count</label>
+          </div>
+          <div class="col-xs-15">
+          <input type="text" data-toggle="tooltip" title="Enter numbers only" placeholder="Enter Count Limit" name="match_field_count_name" id="match_field_count"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+	        <label><span>*</span>Time Frame</label>
+          </div>
+          <div class="col-xs-15">
+            <select name="other_time_frame_name" id="other_time_frame_id" placeholder="Select Time frame">
+                            <option value="">Select time frame </option>
+                            <option value="300">5 Min </option>
+                            <option value="600">10 Min</option>
+                            <option value="1200">20 Min</option>
+                            <option value="1800">30 Min</option>
+                            <option value="2700">45 Min</option>
+                            <option value="3600">1 Hr</option>
+                            <option value="7200">2 Hr</option>
+                            <option value="14400">4 Hr</option>
+                            <option value="21600">6 Hr</option>
+                            <option value="32400">9 Hr</option>
+                            <option value="43200">12 Hr</option>
+                            <option value="64800">18 Hr</option>
+                            <option value="86400">24 Hr</option>
+                        </select>
+          </div>
+        </div>
+        <div class="col-xs-6" title="Select time type and conditional Operator">
+	  <div class="col-xs-13">
+                        <label>Response time</label>
+          </div>
+	 <div class="col-xs-9">
+          <div class="col-xs-3">
+                <select  name="time_type_select_name" id="time_type_select_id" />
+                                <option value="">Select</option>
+                                <option value="time_s" title="time in seconds">time_s</option>
+                                <option value="time_ms" title="time in microseconds. 10,00,000 ms = 1 sec">time_ms</option>
+                        </select>
+          </div>
+          <div class="col-xs-3">
+            <select name="time_operator_name" id="time_operator_id" placeholder="Select Operator">
+                            <option value="">Select Operator </option>
+                            <option value="="> (=) Equals to </option>
+                            <option value="<"> (<) Less than </option>
+                            <option value=">"> (>)Greater than </option>
+                            <option value="<="> (<=) Less than equal to </option>
+                            <option value=">="> (>=) Greater than equal to </option>
+                </select>
+        </div>
+          <div class="col-xs-4">
+           <input type="text" data-toggle="tooltip" title="Enter Integer or Float value only" name="time_taken_name" id="time_taken_id" placeholder="Integer/Float" />
+          </div>
+	 </div>
+<!--
+          <div class="col-xs-13">
+	 <label>CALL</label>
+          </div>
+          <div class="col-xs-15" id="call_td" >
+            <div class="email_field" >
+          <input type='button' class="plus" data-toggle="tooltip"  value='+' id='addCall' disabled/>
+          <input type='button' value='-' id='removeCall' class="minus" disabled />
+          <input type="text" data-toggle="tooltip" name="contact_call_name1" placeholder="Enter mobile no. 1" id="call1" class="rest_dv" disabled/>
+          </div>
+        </div>-->
+      </div>
+      <div class="col-xs-12">
+	<br/>
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+     <label><span>*</span>SMS</label>
+          </div>
+          <div class="col-xs-15" id="sms_td">
+          <div class="email_field">
+           <input type='button' data-toggle="tooltip" title="Press to Add more contact to Sms!" value='+' id='addSms' class='plus' />
+           <input type='button' value='-' id='removeSms' class='minus' />
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name1" placeholder="Enter mobile no. 1" id="sms1" class="rest_dv" />
+        
+    </div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+	 <label><span>*</span>Email</label>
+          </div>
+          <div class="col-xs-15" id="email_td" >
+          <div class="email_field">
+              <input type='button' class='plus' data-toggle="tooltip" title="Press to Add more emails for alert mail!" value='+' id='addEmails'/>
+              <input type='button' class="minus" data-toggle="tooltip" title="Press to remove emails from alert mail!" value='-' id='removeEmails'/>
+              <input type="text" data-toggle="tooltip" title="user@domain.com" placeholder="Enter Email 1" name="email_name1" id="email1" class="rest_dv"/>
+           </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+	<br/>
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+        <label><span>*</span>Severity</label>
+          </div>
+          <div class="col-xs-6 radiobtn">
+            <input type="radio" name="severity" id="low" value="low">
+            <label for="low">Low</label>
+            <input type="radio" name="severity" id="moderate" value="moderate">
+            <label for="moderate">Moderate</label>
+            <input type="radio" name="severity" id="high" value="high" checked>
+            <label for="high">High</label>
+    
+	</div>
+          </div>
+	<div class="col-xs-6" data-toggle="tooltip" title="Enable when creating alert based on timeseries">
+          <div class="col-xs-13">
+        <label><span>*</span>Time Series</label>
+          </div>
+          <div class="col-xs-6 radiobtn">
+            <input type="radio" name="time_series" id="enable" value="time_series_enable">
+            <label for="enable">Enable</label>
+            <input type="radio" name="time_series" id="disable" value="time_series_disable" checked>
+            <label for="disable">Disable</label>
+
+        </div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+	<!--	===============-->
+          </div>
+        </div>
+      </div>
+    <div class="col-xs-12" id="comp_div"><br/>
+          <div class="col-xs-6">
+          <div class="col-xs-13">
+           <label>Comparison 1</label>
+          </div>
+	<div class="col-xs-9">
+                 <div class="col-xs-5">
+			<select name="comp1_time_series_name" id="comp1_time_series_id" placeholder="Select Time Series" title="Select previous Time Series(in hour(s) ) that will be compared with base rules and threshold">
+                            <option value="">Select time series 1</option>
+                            <option value="1hr">1 Hr</option>
+                            <option value="2hr">2 Hr</option>
+                            <option value="4hr">4 Hr</option>
+                            <option value="6hr">6 Hr</option>
+                            <option value="9hr">9 Hr</option>
+                            <option value="12hr">12 Hr</option>
+                            <option value="18hr">18 Hr</option>
+                            <option value="24hr">24 Hr</option>
+                        </select>
+                </div>
+                <div class="col-xs-5">
+                <select name="comp1_threshold_name" id="comp1_threshold_id" placeholder="Diff Percent" title="Select Threshold">
+                            <option value="">Threshold </option>
+                            <option value="10">10%</option>
+                            <option value="20">20%</option>
+                            <option value="30">30%</option>
+                            <option value="40">40%</option>
+                            <option value="50">50%</option>
+                            <option value="60">60%</option>
+                            <option value="70">70%</option>
+                            <option value="80">80%</option>
+                            <option value="90">90%</option>
+                            <option value="100">100%</option>
+                        </select>
+             </div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-13">
+	 <label>Comparison 2</label>
+          </div>
+		<div class="col-xs-9">
+                 <div class="col-xs-5">
+                <select name="comp2_time_series_name" id="comp2_time_series_id" placeholder="Select Time frame" title="Select previous Time Series(in day(s) ) that will be compared with base rules and threshold">
+                            <option value="">Select time series 2</option>
+                            <option value="1d">1 day</option>
+                            <option value="2d">2 day</option>
+                            <option value="3d">3 day</option>
+                            <option value="4d">4 day</option>
+                            <option value="5d">5 day</option>
+                            <option value="6d">6 day</option>
+                            <option value="7d">7 day</option>
+                            <option value="8d">8 day</option>
+                        </select>
+                </div>
+                <div class="col-xs-5">
+                <select name="comp2_threshold_name" id="comp2_threshold_id" placeholder="Diff Percent" title="Select Threshold">
+                            <option value="">Threshold</option>
+                            <option value="10">10%</option>
+                            <option value="20">20%</option>
+                            <option value="30">30%</option>
+                            <option value="40">40%</option>
+                            <option value="50">50%</option>
+                            <option value="60">60%</option>
+                            <option value="70">70%</option>
+                            <option value="80">80%</option>
+                            <option value="90">90%</option>
+                            <option value="100">100%</option>
+                        </select>
+             </div>
+          </div>
+        </div><br/><br/>
+<div class="note1"><strong>Note: </strong>Conditional Operator and Count fields are not required for timeseries alert!</div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="content">
+	  <input type="submit" id="mySubmit" name="mySubmit"  value="Create Notification" />
+      </form>

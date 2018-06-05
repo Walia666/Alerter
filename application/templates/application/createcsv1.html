@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<script src="http://code.jquery.com/jquery-3.2.1.js"  ></script>
+{% load static %}
+<script src="{% static "application/js/datetimepicker.js" %}" type="text/javascript"></script>
+<script src="{% static "application/js/generate.js" %}" type="text/javascript"></script>
+<script src="{% static "application/js/csv.js" %}" type="text/javascript"></script>
+{{log}}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<title>Generate CSV</title>
+<link rel="stylesheet" type="text/css" href="{% static 'application/css/modify.css' %}"/>
+</head>
+<header>
+  <div class="content clearfix">
+   <div class="logo_inner"><img src="{% static "application/images/shopclues.png" %}" width="100%" alt=""/></div>
+    <div class="right_sec">  Welcome {{request.session.Username}} <br>
+      <a href="/logout">Logout</a></div>
+  </div>
+
+  <body>
+</header>
+{% if messages %}
+   <script>
+    {% for message in messages %}
+        alert("{{ message }}");
+    {% endfor %}
+   </script>
+{% endif %}
+
+<section class="app_name">
+  <div class="content">
+    <h1>Logger Notification Panel</h1>
+  </div>
+</section>
+
+
+    <section class="con_area clearfix">
+ 
+ </section>
+
+  <div class="content"> 
+
+    <div class="tabs">
+     <ul>
+     
+     
+     <li><a href="/applogalert">Applog Alert</a></li>
+
+
+     <li><a href="/modify">Show/Modify</a></li>
+     <li class="active"><a href="/docsnew">Generate CSV</a></li>
+     <li><a href="/alertinfo">Alert Info</a></li>
+       </ul>
+       
+       
+</div>
+<form id="submit_form" name ="myform" action="/docsnew/" method="post" onsubmit="return validateform()"  > {% csrf_token %}
+
+    <div class="abc">
+     <div class="alert_box">
+
+    <div class="col-xs-12"> 
+  
+  {{form}}
+
+    
+     </div>
+
+<br>       
+     
+           <div class="col-xs-12">     
+          <div class="col-xs-1">
+              <label><span>*</span>Kibana query</label>
+          </div>
+          <div class="col-xs-10">
+            <input type="text" name="kibana_query" id="kibana_query_id" placeholder="Kibana query" value="{{kibana}}" class="mytext">
+          </div>
+        </div>
+
+  
+        <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-2"><label><span>*</span>From</label></div>
+            <div class="col-xs-6"><input type="Text" name="datetime_from_name" id="datetime_from" maxlength="25" size="25"  value = ""><a href="javascript:NewCal('datetime_from','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></div>
+        </div>
+
+        <div class="col-xs-6">
+          <div class="col-xs-2"><label>To</label></div>
+            <div class="col-xs-6"> 
+              <input type="Text" name="datetime_to_name" id="datetime_to" maxlength="25" size="25" value=""><a href="javascript:NewCal('datetime_to','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+            </div>
+        </div>
+      </div>
+      </div>
+</div>
+     <div class="note">Please select checkbox for fields you want to export</div>
+    <div class="check_box_area" id="formfield">
+    
+   
+    </div>
+    <div class="note1"><strong>Note: </strong>Maximum 500000 records can be exported in CSV file</div>
+ 
+
+
+  
+
+
+
+   
+    
+
+    
+
+  
+    <footer>
+
+   
+     <div class="content"> 
+        
+       <input type="submit" data-toggle="tooltip" title="New alert will be created!" value="Generate CSV">
+
+     </div>
+     </footer>
+    
+
+     </form> 
+   
+  
+    

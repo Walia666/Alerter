@@ -1,0 +1,145 @@
+
+		<!doctype html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-3.2.1.js"  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+     {% load static %}
+<script src="{% static "application/js/cv.js" %}" type="text/javascript"></script>
+<script src="{% static "application/js/time.js" %}" type="text/javascript"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<title>Generate CSV</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<header>
+  <div class="content clearfix">
+    <div class="logo_inner"><img src="images/logo_inner.png" width="100%" alt=""/></div>
+    <div class="right_sec">Welcome shopclues <br>
+      <a href="home.php?logout">Logout</a></div>
+  </div>
+</header>
+<section class="app_name">
+  <div class="content">
+    <h1>Logger Notification Panel</h1>
+  </div>
+</section>
+
+<section class="con_area clearfix">
+  <div class="content">
+    <div class="tabs">
+      <ul>
+	<li><a href="/application/test/">Applog Alert</a></li>
+        <li><a href="/application/general/">Systemlog Alert</a></li>
+        <li><a href="/application/timeseries/" title="Time-Series alert will notify based on log trend(previous logs with same time-frame)">Time Series Alert</a></li>
+        <li><a href="/application/modify/">Show/Modify</a></li>
+        <li class="active"><a href="/application/csv/">Generate CSV</a></li>
+      </ul>
+      </ul>
+    </div>
+    
+     <div class="alert_box clearfix">
+      <form id="validate_log_type_form_csv"  name="listform" action="" method="post" onsubmit="return log_type_validate_csv()">
+      <div class="col-xs-12">
+     <select id="log_type_id" name="log_type_name" class="change_select" onchange="log_type_validate_csv()">
+                <option value="">Select Log Type</option>
+                <option value="adminlog" >Admin Log</option>
+                <option value="weblog" >Weblog/Frontend</option>
+            </select>
+  </form>
+        </div>
+<form id="submit_form" action="" method="post" onsubmit="return validateform()">
+        <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label><span>*</span>Domain</label></div>
+            <div class="col-xs-6"><select name="domain_name" id="domain"  placeholder="Select Domain" onchange="loadModule()"/>
+    <option value="" >*** Select Domain ***</option>
+                 </select></div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label><span>*</span>Module</label></div>
+            <div class="col-xs-6"> <select name="module_name" id="module"  />
+                <option value="">*** Select Module ***</option>
+    </select></div>
+        </div>
+        
+      </div>
+      <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label><span>*</span>Level</label></div>
+            <div class="col-xs-6"><select name="level_name" id="level"  />
+    <option value=""> Select Level </option>
+               <option value="CRITICAL">CRITICAL</option>
+                <option value="ERROR">ERROR</option>
+                <option value="INFO">INFO</option>
+    </select></div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label>Fields</label></div>
+            <div class="col-xs-6"> 
+              <div class="multiple_fields">
+                <select name="field_list_name" id="field_list_id">
+                  <option value="">Select</option>
+                  <option value="field1">Field1</option>
+                  <option value="field2">Field2</option>
+      		  <option value="field3">Field3</option>
+                  <option value="field4">Field4</option>
+                  <option value="error_name">Error Name</option>
+                </select>
+                <input type="text" name="field_name" id="field" placeholder="Enter Value" />
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      
+      
+      <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label><span>*</span>From</label></div>
+            <div class="col-xs-6"><input type="Text" name="datetime_from_name" id="datetime_from" maxlength="25" size="25"><a href="javascript:NewCal('datetime_from','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label>To</label></div>
+            <div class="col-xs-6"> 
+              <input type="Text" name="datetime_to_name" id="datetime_to" maxlength="25" size="25"><a href="javascript:NewCal('datetime_to','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="note">Please select checkbox for fields you want to export</div>
+    <div class="check_box_area">
+    <input type="checkbox" name="domain_to_export" id="d1" value="domain"><label for="d1">Domain</label>
+    <input type="checkbox" name="module_to_export" id="m1" value="module"><label for="m1">Module</label>
+    <input type="checkbox" name="level_to_export" id="l1" value="level"><label for="l1">Level</label>
+    <input type="checkbox" name="error_name_to_export" id="e1" value="error_name"><label for="e1">Error Name</label>
+    <input type="checkbox" name="url_to_export" id="u1" value="url"><label for="u1">Url</label>
+    <input type="checkbox" name="time_taken_to_export" id="t1" value="time_taken"><label for="t1">Time taken</label>
+    <input type="checkbox" name="description_to_export" id="d2" value="description"><label for="d2">Description</label><br/>
+    <input type="checkbox" name="field1_to_export" id="f1" value="Field1"><label for="f1">Field 1</label>
+    <input type="checkbox" name="field2_to_export" id="f2" value="Field2"><label for="f2">Field 2</label>
+    <input type="checkbox" name="field3_to_export" id="f3" value="Field3"><label for="f3">Field 3</label>
+    <input type="checkbox" name="field4_to_export" id="f4" value="Field4"><label for="f4">Field 4</label>
+    <input type="checkbox" name="field5_to_export" id="f5" value="Field5"><label for="f5">Field 5</label>
+    <input type="checkbox" name="field6_to_export" id="f6" value="Field6"><label for="f6">Field 6</label>
+    <input type="checkbox" name="field7_to_export" id="f7" value="Field7"><label for="f7">Field 7</label>
+    <input type="checkbox" name="field8_to_export" id="f8" value="Field8"><label for="f8">Field 8</label>
+    <input type="checkbox" name="field9_to_export" id="f9" value="Field9"><label for="f9">Field 9</label>
+    <input type="checkbox" name="field10_to_export" id="f10" value="Field10"><label for="f10">Field 10</label>
+    </div>
+    <div class="note1"><strong>Note: </strong>Maximum 100000 records can be exported in CSV file</div>
+  </div>
+</section>
+<footer>
+  <div class="content">
+  <input type="submit" id="create_csv_for_download" name="create_csv_for_download" value="Create CSV" >
+</form> 
+  </div>
+</footer>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script src="js/csv.js"></script>
+<script language="javascript" type="text/javascript" src="js/datetimepicker.js"></script>
+</body>
+</html>

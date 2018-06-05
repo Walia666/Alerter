@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+
+<meta charset="utf-8">
+<head>
+
+
+<script src="http://code.jquery.com/jquery-3.2.1.js"  ></script>
+{% load static %}
+<script src="{% static "application/js/modify.js" %}" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'application/css/modify.css' %}"/>
+</head>
+<header>
+  <div class="content clearfix">
+   <div class="logo_inner"><img src="{% static "application/images/shopclues.png" %}" width="100%" alt=""/></div>
+    <div class="right_sec">  Welcome {{request.session.Username}} <br>
+      <a href="/logout">Logout</a></div>
+       <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src='https://code.jquery.com/jquery-1.12.3.js'></script>
+   <script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
+   <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" charset="utf-8"></script>
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+       <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.bootstrap.min.css">
+
+  </div>
+
+</header>
+<body>
+<section class="app_name">
+  <div class="content">
+    <h1>Logger Notification Panel</h1>
+  </div>
+</section>
+
+  <div class="content">
+
+
+
+
+     <div class="tabs">
+      <ul>
+
+     <li><a href="/applogalert">Applog Alert</a></li>
+     <li><a href="/modify">Show/Modify</a></li>
+     <li><a href="/generate">Generate CSV</a></li>
+     <li class="active"><a href="/alertinfo">Alert Info</a></li>
+
+      </ul>
+    </div>
+
+
+
+
+<h3>Alert Info</h3><table class='table table-hover' cellpadding='0' cellspacing='0' width='100%' id="maintable">
+        <thead>     <tr><th>Alert name</th><th>Information</th> </tr> </thead>
+
+<tbody>
+{% for alert,kibana,time,mailsent,smssent,alertid in kibanaquery %}
+
+<tr><td align='center'>{{alert}}</td> <td align='center'>
+  <!-- Trigger the modal with a button -->
+
+  <button type="button" class="btn btn-info btn-lg" style="height:40px;width:90px;font-size:15px"
+ data-toggle="modal" data-target="#{{alertid}}">Info</button> <br>
+
+   <!-- Modal -->
+
+
+      <div class="modal modal-wide fade" id="{{alertid}}" role="dialog">
+      <div class="modal-dialog modal-sm">
+
+      <!-- Modal content-->
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>Alert:</strong>{{alert}}</h4>
+        </div>
+        <br>
+       <table class='table table-hover' cellpadding='0' cellspacing='0' width='100%'>
+       
+        <tr> <th> Kibana Query </th> <th> Last Alert Sent  </th> <th> Mail Sent </th> <th> SMS Sent </th> </tr>
+        <tr> <td>{{kibana.0}} </td> 
+         <td> 
+         {% for ls in time %}
+           {{ls}} <br> 
+        
+         {% endfor %}
+         </td> 
+         <td>
+        {% for mail in mailsent %}
+            {{mail}} <br> 
+            {% endfor %}
+            </td>
+          <td> 
+        {% for sms in smssent %}
+         {{sms}} <br>         
+   
+        {% endfor %}
+         </td>
+         </tr>
+       </table>
+   </div>
+   </div>
+ </div>      
+       
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</body>
+

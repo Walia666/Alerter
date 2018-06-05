@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+
+
+
+<meta charset="utf-8">
+<script src="http://code.jquery.com/jquery-3.2.1.js"  ></script>
+{% load static %}
+<script src="{% static "application/js/datetimepicker.js" %}" type="text/javascript"></script>
+<script src="{% static "application/js/generate.js" %}" type="text/javascript"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<title>Generate CSV</title>
+<link rel="stylesheet" type="text/css" href="{% static 'application/css/modify.css' %}"/>
+</head>
+<header>
+  <div class="content clearfix">
+   <div class="logo_inner"><img src="{% static "application/images/shopclues.png" %}" width="100%" alt=""/></div>
+    <div class="right_sec">  Welcome {{request.session.Username}} <br>
+      <a href="/application/logout">Logout</a></div>
+  </div>
+
+  <body>
+</header>
+<section class="app_name">
+  <div class="content">
+    <h1>Logger Notification Panel</h1>
+  </div>
+</section>
+
+<div class="content"> 
+
+    <div class="tabs">
+     <ul>
+     
+     
+     <li><a href="/application/general">Applog Alert</a></li>
+
+
+     <li><a href="/application/modify">Show/Modify</a></li>
+     <li class="active"><a href="/application/csv">Generate CSV</a></li>
+       </ul>
+       
+       
+</div>
+<form id="submit_form" name ="myform" action="/application/docsnew/" method="post" onsubmit="return validateform()"  > {% csrf_token %}
+
+    
+     <div class="alert_box">
+
+
+    <div class="col-xs-1">
+  {{form}}
+
+     
+     </div>
+
+      
+      <div class="col-xs-12">
+    
+          <div class="col-xs-2">
+              <label><span>*</span>Kibana query</label>
+          </div>
+          <div class="col-xs-10">
+            <input type="text" name="kibana_query" id="kibana_query_id" placeholder="Kibana query" value="{{kibana}}" class="mytext">
+          </div>
+        </div>
+
+  
+        <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label><span>*</span>From</label></div>
+            <div class="col-xs-6"><input type="Text" name="datetime_from_name" id="datetime_from" maxlength="25" size="25"><a href="javascript:NewCal('datetime_from','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></div>
+        </div>
+
+        <div class="col-xs-6">
+          <div class="col-xs-4"><label>To</label></div>
+            <div class="col-xs-6"> 
+              <input type="Text" name="datetime_to_name" id="datetime_to" maxlength="25" size="25"><a href="javascript:NewCal('datetime_to','ddmmyyyy',true,24)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+            </div>
+        </div>
+      </div>
+      </div>
+
+      <div class id ="cde">
+
+ </div>
+   

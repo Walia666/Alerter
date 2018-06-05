@@ -1,0 +1,93 @@
+def crossdomainData(request):
+        url = "http://127.0.0.1:9200/web_log-*"
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        return HttpResponse(response.read(), content_type="application/json")
+
+
+function myFunction() {
+
+	
+    var x = document.getElementById("id_log_field").value;
+
+    var arr=[]
+    var val=[]
+    if (x == "Web Log")
+    {
+     $.ajax({ 
+    type: "GET",
+     headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+    url: 'crossdomainData',
+
+ 
+    
+    
+    success: function(data){
+        console.log(data);
+        result1=data['web_log-2016.11.17']['mappings']['log']['properties']
+        console.log(result1)
+        for (var key in result1) {
+        	arr.push(key) 
+        }
+
+
+console.log(data);
+console.log(arr);
+
+var arrayLength = arr.length;
+var container = document.getElementById("formfield");
+    
+ 
+           
+            // Clear previous contents of the container
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+
+ 
+            for (i=0;i<=arrayLength;i++){
+    var newTextBoxDiv = $(document.createElement('checkbox'))
+    if(arr[i] == "@timestamp")
+       {
+  newTextBoxDiv.after().html(
+        ' <input type="checkbox" name="'+arr[i] + 
+        '" id="m' + i + '" value="member' + i + '" onclick="return false;" checked> <label for ="m' + i + '">' + arr[i] +' </label>' )
+
+}
+else {
+
+  newTextBoxDiv.after().html(
+        ' <input type="checkbox" name="'+arr[i] + 
+        '" id="m' + i + '" value="member' + i + '"  > <label for ="m' + i + '">' + arr[i] +' </label>' )
+
+
+}
+        
+
+newTextBoxDiv.appendTo("#formfield");
+ }
+ 
+newTextBoxDiv.after().html(   '<input type="hidden" name="data" id="sms" value="'+ arr +'" >');
+newTextBoxDiv.appendTo("#formfield")
+
+ 
+
+
+
+        }
+    
+
+
+       
+   
+   
+
+    });
+   
+ }
+
+}
+
+   

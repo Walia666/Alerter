@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+
+<meta charset="utf-8">
+<head>
+
+
+<script src="http://code.jquery.com/jquery-3.2.1.js"  ></script>
+{% load static %}
+<script src="{% static "application/js/modify.js" %}" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'application/css/modify.css' %}"/>
+</head>
+<header>
+  <div class="content clearfix">
+   <div class="logo_inner"><img src="{% static "application/images/shopclues.png" %}" width="100%" alt=""/></div>
+    <div class="right_sec">  Welcome {{request.session.Username}} <br>
+      <a href="/application/logout">Logout</a></div>
+       <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </div>
+
+</header>
+<body>
+  
+<section class="app_name">
+  <div class="content">
+    <h1>Logger Notification Panel</h1>
+  </div>
+</section> 
+   
+  <div class="content">
+    
+
+
+      
+     
+     <div class="tabs">
+      <ul>
+     
+     <li><a href="/application/applogalert">Applog Alert</a></li>
+
+     <li class="active"><a href="/application/modify">Show/Modify</a></li>
+     <li><a href="/application/generate">Generate CSV</a></li>
+       
+      </ul>
+    </div> 
+       
+     
+    
+
+
+
+<h3>App Log Alerts</h3><table class='table table-hover' cellpadding='0' cellspacing='0' width='100%'>
+             <tr><th>Alert name</th><th>Log Type</th> <th>Last Alert Sent</th><th>Modify Alert</th><th>Postpone Alert </th>
+             </tr>
+
+ {% for alert,logtype,lastalertsent,alertid,kibana,count,time,condition,email1,call1,sms1,notification,email2,email3,email4,email5,sms2,sms3,sms4,sms5  in zippedlist %}
+
+<tr><td align='center'>{{alert}}</td><td align='center'>{{logtype}}</td><td align='center'>{{lastalertsent}}</td> <td align='center'>
+ 
+  
+
+
+
+  <!-- Trigger the modal with a button -->
+ 
+  <button type="button" class="btn btn-info btn-lg" 
+ data-toggle="modal" data-target="#{{alertid}}">Edit Alert</button> <br>
+
+   <!-- Modal -->
+
+  
+      <div class="modal modal-wide fade" id="{{alertid}}" role="dialog">
+      <div class="modal-dialog modal-sm">
+
+      <!-- Modal content-->
+     
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><strong>Alert:</strong>{{alert}}</h4>
+        </div>
+        
+ 
+           
+          <form id="submit_form" name ="myform" action="/application/edit/" method="post" onsubmit="return validateform('{{alertid}}')"  style="margin-top:-6% "  > {% csrf_token %}
+        
+
+
+
+    
+     <input type="hidden" name="alert_id" value="{{alertid}}">
+     
+      
+
+
+<div class="alert_box"> 
+
+<div class="col-xs-12">
+    
+          <div class="col-xs-2">
+              <label><span>*</span>Kibana query</label>
+          </div>
+          <div class="col-xs-10">
+            <input type="text" name="kibana_query" id="kibana_query_id{{alertid}}" placeholder="Kibana query" value="{{kibana}}" class="mytext">
+          </div>
+        </div>
+
+
+
+
+
+
+      <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+              <label><span>*</span>Alert Name</label>
+
+          </div>
+          <div class="col-xs-9">
+            <input type="text" name="alert_name" id="alert_name_id{{alertid}}" placeholder="Domain and Module will be added as prefix" value="{{alert}}" >
+          </div>
+        </div> 
+        
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span>*</span>Time Frame</label>
+          </div>
+          <div class="col-xs-9">
+            <select name="time_frame_name" id="time_frame_id{{alertid}}" placeholder="Select Time frame" >
+             <option selected="{{time}}">{{time}} </option>
+          <option value="5m">5 Min </option>
+          <option value="10m">10 Min</option>
+                            <option value="15m">15 Min</option>
+          <option value="20m">20 Min</option>
+                            <option value="25m">25 Min</option>
+          <option value="30m">30 Min</option>
+          <option value="45m">45 Min</option>
+          <option value="1H">1 Hr</option>
+                            <option value="90m">90 Min</option>
+          <option value="2H">2 Hr</option>
+          <option value="4H">4 Hr</option>
+          <option value="6H">6 Hr</option>
+          <option value="9H">9 Hr</option>
+          <option value="12H">12 Hr</option>
+          <option value="18H">18 Hr</option>
+          <option value="24H">24 Hr</option>
+      </select>
+          </div>
+        </div>
+        </div>
+      
+      
+     
+      
+        
+      
+
+
+
+
+
+
+
+         <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span>*</span>Operator</label>
+          </div>
+          <div class="col-xs-9">
+            <select name="conditional_operator" id="conditional_operator_id{{alertid}}" placeholder="Select Operator">
+            <option selected="{{condition}}">{{condition}} </option>
+        <option value="">Select Operator </option>
+        <option value="==">Equals to (=)</option>
+          <option value="<">Less than (<)</option>
+          <option value=">">Greater than (>)</option>
+          <option value="<=">Less than equal to (<=)</option>
+          <option value=">=">Greater than equal to (>=)</option>
+    </select>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span>*</span>Count</label>
+            <br>
+          </div>
+          <div class="col-xs-9">
+          
+           <input type="text" data-toggle="tooltip" name="match_field_count_name" placeholder="Enter count" id="match_field_count{{alertid}}" value={{count}} class="rest_dv" />
+             </div>
+            </div>
+            </div>
+      <div class="col-xs-12">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+              <label><span>*</span>Email</label>
+          </div>
+          <div class="col-xs-9">
+            <input type="text" name="email_name1"  value="{{email1}}" id="email1{{alertid}}">
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span>*</span>SMS</label>
+            <br>
+          </div>
+          <div class="col-xs-9">
+          
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name1" placeholder="Enter mobile no. 1" id="sms1{{alertid}}" value="{{sms1}}" class="rest_dv" />
+             </div>
+            </div>
+            </div>
+          <div class="col-xs-16">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+              <label><span></span>  </label>
+          </div>
+          <div class="col-xs-9">
+          {% if email2 == "None" or email2 == "" %}
+            <input type="text" name="email_name2"  placeholder="Enter email" id="email2{{alertid}}">
+          {% else %}
+           <input type="text" name="email_name2"  value="{{email2}}" id="email2{{alertid}}">
+           {% endif %}
+         
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span></span>  </label>
+            <br>
+          </div>
+          <div class="col-xs-9">
+          {% if sms2 == "None" or sms2 == "" %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name2" placeholder="Enter mobile no." id="sms2{{alertid}}"  class="rest_dv" />
+           {% else %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name2" id="sms2{{alertid}}" value="{{sms2}}" class="rest_dv" />
+           {% endif %}
+
+
+
+
+             </div>
+           
+            </div>
+            </div>
+            <div class="col-xs-16">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+              <label><span></span>  </label>
+          </div>
+          <div class="col-xs-9">
+          {% if email3 == "None" or email3 == "" %}
+          <input type="text" name="email_name3"  placeholder="Enter email" id="email3{{alertid}}">
+          {% else %}
+          <input type="text" name="email_name3"  value="{{email3}}" id="email3{{alertid}}">
+          {% endif %}
+          
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span></span>  </label>
+            <br>
+          </div>
+          <div class="col-xs-9">
+          {% if sms3 == "None" or sms3 == "" %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name3" placeholder="Enter mobile no" id="sms3{{alertid}}" class="rest_dv" />
+           {% else %}
+            <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name3" value="{{sms3}}" id="sms3{{alertid}}" class="rest_dv" />
+            {% endif %}
+             </div>
+            
+           
+            </div>
+            </div>
+            <div class="col-xs-16">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+              <label><span></span>  </label>
+          </div>
+          <div class="col-xs-9">
+
+          {% if email4 == "None" or email4 == "" %}
+            <input type="text" name="email_name4" placeholder="Enter email" id="email4{{alertid}}">
+          {% else %}
+          <input type="text" name="email_name4"  value="{{email4}}" id="email4{{alertid}}">
+          {% endif %}
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span></span>  </label>
+            <br>
+          </div>
+          <div class="col-xs-9">
+          {% if sms4 == "None" or sms4 == "" %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name4" placeholder="Enter mobile no." id="sms4"  class="rest_dv" />
+           {% else %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name4" value="{{sms4}}" id="sms4{{alertid}}"  class="rest_dv" />
+           {% endif %}
+             </div>
+           
+           
+            </div>
+            </div>
+            <div class="col-xs-16">
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+              <label><span></span>  </label>
+          </div>
+          <div class="col-xs-9">
+          {% if email5 == "None" or email5 == "" %}
+            <input type="text" name="email_name5"  placeholder="Enter email" id="email5{{alertid}}">
+            {% else %}
+            <input type="text" name="email_name5"  value="{{email5}}" id="email5{{alertid}}">
+            {% endif %}
+          
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="col-xs-3">
+            <label><span></span>  </label>
+            <br>
+          </div>
+         
+          <div class="col-xs-9">
+           {% if sms5 == "None" or sms5 == "" %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name5" placeholder="Enter mobile no." id="sms5{{alertid}}"  class="rest_dv" />
+           {% else %}
+           <input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name5" value="{{sms5}}" id="sms5{{alertid}}"  class="rest_dv" />
+           {% endif %} 
+             </div>
+           
+           
+            </div>
+            </div>
+       <div class="col-xs-16">
+       <div class="col-xs-6">
+          <div class="col-xs-1">
+            <label><span>*</span>Severity</label>
+          </div>
+          <div class="col-xs-11 radiobtn">
+            <input type="radio" name="severity" id="low" value="low">
+            <label for="low">Low</label>
+            <input type="radio" name="severity" id="moderate" value="moderate">
+            <label for="moderate">Moderate</label>
+            <input type="radio" name="severity" id="high" value="high" checked>
+            <label for="high">High</label>
+          </div>
+        </div>
+       <div class="col-xs-6">
+          <div class="col-xs-3">
+          <label><span>*</span>Alert status</label>
+          </div>
+         <div class="col-xs-9">
+          
+        {% if notification == "active" %}
+        <select name="Notification_status" id="Notification_status" >
+        <option value="active">active</option>
+          <option value="inactive"> inactive</option> 
+        </select>
+        {% else %}
+        <select name="Notification_status" id="Notification_status" >
+        <option value="inactive">inactive</option>
+        <option value="active"> active</option> 
+        </select>
+        {% endif %}
+       </div>
+
+       </div>
+       </div>
+       
+             
+
+        
+
+
+
+        
+        
+        
+   
+     <footer>     
+     <div class="content"> 
+     
+       <input type="submit" data-toggle="tooltip" title="New alert will be created!" value="Modify">
+    
+
+      
+     </div> 
+
+     </footer>
+    </div>
+    
+
+    </div>
+
+
+
+     </form>
+    
+
+      </div>
+      </div>
+     </div>
+     </div>
+     </div>
+     </div>
+
+     </td>
+
+
+      
+
+        
+        
+      </td>
+      <td>
+       <select class='btn dropdown-toggle'  name='postpone' id='{{alertid}}a' onchange='postponeAlert("{{alertid}}","{{alert}}")' >
+		<option value=''>Select time</option>
+                <option value='600'>10min </option>
+                <option value='900'>15min</option>
+                <option value='1200'>20min</option>
+                <option value='1500'>25min</option>
+                <option value='1800'>30min</option>
+                <option value='2700'>45min</option>
+                <option value='3600'>60min</option>
+                <option value='5400'>90min</option>
+                <option value='7200'>2Hr</option>
+                <option value='10800'>3Hr</option>
+                <option value='14400'>4Hr</option>
+                <option value='21600'>6Hr</option>
+                <option value='32400'>9Hr</option>
+                <option value='43200'>12Hr</option>
+                <option value='64800'>18Hr</option>
+                <option value='now'>Resume Now</option>
+
+	</select>
+
+        </td>
+      </tr>
+      {% endfor %}
+      </table>
+
+   
+    
+     </div>
+
+
+
+
+
+
+

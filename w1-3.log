@@ -1,0 +1,11 @@
+[2017-09-05 11:20:36,806: INFO/ForkPoolWorker-3] Task alert.tasks.add[3256b8c8-dcd9-4824-b56b-bd70f17b3ed8] succeeded in 0.158936655s: 4
+[2017-09-05 11:26:50,877: INFO/ForkPoolWorker-3] Task alert.tasks.mul[a0e21876-dd48-4cbb-8441-c4271b2be020] succeeded in 0.143163398s: 49
+[2017-09-05 11:33:40,516: ERROR/ForkPoolWorker-3] Task alert.tasks.xsum[664dc132-b8cf-4882-bd45-e068a86605a2] raised unexpected: TypeError("'int' object is not iterable",)
+Traceback (most recent call last):
+  File "/home/shopclues/project/env/local/lib/python2.7/site-packages/celery/app/trace.py", line 374, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/shopclues/project/env/local/lib/python2.7/site-packages/celery/app/trace.py", line 629, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/shopclues/project/alert/alert/tasks.py", line 17, in xsum
+    return sum(numbers)
+TypeError: 'int' object is not iterable

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title></title>
+<script src="http://code.jquery.com/jquery-3.2.1.js"  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<link href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"  crossorigin="anonymous">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'application/css/alerter.css' %}"/>
+</head>
+<body style="background-color: #fff">
+<section class="app_name"> 
+  <div class="content"><div class="logo_inner"><img src="{% static "application/images/shopclues.png" %}" width="100%" alt=""/></div>
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;Shopclues Dashboards &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a target='_blank'> <a href='form'><span style='color:#ffffff;'>Set Alert</span></a></h1>
+  </div>
+
+  
+
+  
+</section>
+
+
+ <div id="complete_page">
+<div class="content">
+
+ 
+     <div class="row-fluid" id="main_div">
+ 
+ 
+          <div class="span6" id="left_div_id"><!-- Left div ends here -->
+
+
+{% for value in Value %}
+    
+  
+{% if not value.id|divisibleby:"2" %}
+
+                                                                                      
+   
+  {% with value.slug as list %}
+
+    {% for item in list.split %} 
+     
+ 
+  <h3>  {{item}} </h3>                                                                                       
+   
+    {% for All in all %}
+     
+    {% for feat in All.feature_type.all %}
+         
+      
+    {% ifequal item|slugify feat|slugify %} 
+    
+             
+      <ul style="list-style-type:none">
+        <li> <a href="{{All.Dashboard_url}}">{{All.Dashboard_name}}</a>             
+         <a href="/">{{All.owner_name}}</a> </li> 
+      </ul>
+
+  {% endifequal %}
+  {% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% endwith %}
+  
+     
+
+ {% endif %}
+ {% endfor %}  
+ 
+
+
+          
+        </div> <!-- Left div ends here -->
+
+ 
+   
+
+          <div class="span6" id="right_div_id"><!-- Right div ends here -->
+
+    {% for value in Value %}
+{% if value.id|divisibleby:"2" %}                                                                               
+   
+  {% with value.slug as list %}
+    {% for item in list.split %} 
+       
+
+  <h3>{{item}}</h3>                                                                                         
+   
+    
+    {% for All in all %}
+    {% for feat in All.feature_type.all %} 
+    {% ifequal item|slugify feat|slugify %}
+      <ul style="list-style-type:none">
+        <li> <a href="{{All.Dashboard_url}}">{{All.Dashboard_name}}</a>             
+         <a href="/">{{All.owner_name}}</a> </li> 
+      </ul>
+     
+  {% endifequal %}
+  {% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% endwith %}
+  
+     
+
+ {% endif %}
+ {% endfor %}  
+ 
+
+        </div>  <!-- Right div ends here -->
+
+    
+  </div> 
+  </div>
+  </div>
+
+ </body>
+ </html>
+  
+
+  
+  

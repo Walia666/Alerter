@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title></title>
+<script src="http://code.jquery.com/jquery-3.2.1.js"  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<link href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"  crossorigin="anonymous">
+{% load static %}
+<style>
+<link rel="stylesheet" type="text/css" href="{% static 'application/css/alerter.css' %}"/>
+#main_div{
+margin-left:120px;
+width: 1200px;
+margin-top:70px;
+}
+#left_div_id{
+width: 400px;
+}
+#right_div_id{
+width: 400px;
+margin-left:150px;
+}
+#left_div_id li a{ position: relative;}
+#left_div_id li a{
+  line-height:20px; text-transform:capitalize;
+}
+h3 {
+    text-transform:uppercase;
+    color:brown;
+    text-indent:20px;
+    font-size:25px;
+    
+   
+}
+#right_div_id li a{
+  line-height:20px; text-transform:capitalize;
+}
+#left_div_id li a:nth-child(2){ position:absolute; left:520px;}
+#right_div_id li a:nth-child(2){ position:absolute; left:1100px;}
+h1{
+  position:absolute;
+  
+  left:400px;
+  top:-1px;
+  font-size:30px;
+  color:white;
+  font-style:oblique;
+}
+img{
+  position:absolute;
+  left:90px;
+  top:10px;
+}
+#ABC {
+      
+      background-color:#6b6a6a; 
+      height: 10%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+
+</style>
+</head>
+
+
+<body style="background-color: #fff">
+<!--<div class="content clearfix">
+    <div class="logo_inner"><img src="images/logo_inner.png" width="100%" alt=""/></div>
+    <div class="right_sec"><br>
+  </div>-->
+
+  {% load static %}
+  
+
+<section class="app_name" id="ABC">
+
+  <div class="content"><img src="{% static "application/images/shopclues.png" %}" alt="My image" height="100" width="200"/>
+<div class="logo_inner"></div>
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;Shopclues Dashboards &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </h1>
+  </div>
+</section>
+    
+
+
+ 
+
+ 
+     <div class="row-fluid" id="main_div">
+ 
+ 
+          <div class="span6" id="left_div_id"><!-- Left div ends here -->
+ 
+         
+      
+    
+{% for value in Value %}
+    
+   
+{% if value.slug|length >  6 %}
+
+                                                                                      
+   
+  {% with value.slug as list %}
+    {% for item in list.split %} 
+       
+
+  <h3>{{item}}</h3>                                                                                       
+   
+    {% for All in all %}
+    {% for feat in All.feature_type.all %} 
+    {% ifequal item feat|slugify %}
+      <ul style="list-style-type:none">
+        <li> <a href="{{All.Dashboard_url}}">{{All.Dashboard_name}}</a>             
+         <a href="{{All.owner_email}}">{{All.owner_name}}</a> </li> 
+      </ul>
+     
+  {% endifequal %}
+  {% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% endwith %}
+  
+     
+
+ {% endif %}
+ {% endfor %}  
+ 
+
+
+          
+        </div> <!-- Left div ends here -->
+
+ 
+   
+
+          <div class="span6" id="right_div_id"><!-- Right div ends here -->
+
+    {% for value in Value %}
+{% if value.slug|length <  6 %}                                                                               
+   
+  {% with value.slug as list %}
+    {% for item in list.split %} 
+       
+
+  <h3>{{item}}</h3>                                                                                         
+   
+    
+    {% for All in all %}
+    {% for feat in All.feature_type.all %} 
+    {% ifequal item feat|slugify %}
+      <ul style="list-style-type:none">
+        <li> <a href="{{All.Dashboard_url}}">{{All.Dashboard_name}}</a>             
+         <a href="{{All.owner_email}}">{{All.owner_name}}</a> </li> 
+      </ul>
+     
+  {% endifequal %}
+  {% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% endwith %}
+  
+     
+
+ {% endif %}
+ {% endfor %}  
+ 
+
+        </div>  <!-- Right div ends here -->
+
+    
+  </div> 
+
+ </body>
+ </html>
+  
+
+  

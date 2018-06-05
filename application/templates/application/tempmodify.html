@@ -1,0 +1,106 @@
+<html>
+<body>
+<head>
+ <h1> EDIT ALERTS </h1>
+</head>
+
+
+<li><a href="/application/general">Make Alerts</a></li>
+ <li> <a href="/application/logout">Logout </a> </li>
+
+{% for alertid in alertidlist %}
+{{alertid}} 
+
+{% endfor %}
+
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+ {{request.session.emp_id}}<br>
+
+  <!-- Trigger the modal with a button -->
+ <font size="5"> {{alertnamelist.0}} </font>  &nbsp; &nbsp; &nbsp;  
+  <button type="button" class="btn btn-info btn-lg" 
+ data-toggle="modal" data-target="#myModal">edit</button> <br>
+ 
+   <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Alert</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <form id="{{alertnamelist.0}}" name ="myform" action="/application/edit/" method="post"> {% csrf_token %}
+          <input type="hidden" name="alert_id" value="{{alertidlist.0}}">
+          Alert name :<input type="text" name="alert_name">
+          Timeframe: <select name="time_frame_name" id="time_frame_id" placeholder="Select Time frame">
+          <option value="">Select time frame </option>
+          <option value="5m">5 Min </option>
+          <option value="10m">10 Min</option>
+                            <option value="15m">15 Min</option>
+          <option value="20m">20 Min</option>
+                            <option value="25m">25 Min</option>
+          <option value="30m">30 Min</option>
+          <option value="45m">45 Min</option>
+          <option value="1H">1 Hr</option>
+                            <option value="90m">90 Min</option>
+          <option value="2H">2 Hr</option>
+          <option value="4H">4 Hr</option>
+          <option value="6H">6 Hr</option>
+          <option value="9H">9 Hr</option>
+          <option value="12H">12 Hr</option>
+          <option value="18H">18 Hr</option>
+          <option value="24H">24 Hr</option>
+      </select> <br>
+      Kibanaquery: <input type="text" name="kibana_query" id="kibana_query_id" placeholder="Kibana query" >
+       Operator : <select name="conditional_operator" id="conditional_operator_id" placeholder="Select Operator">
+        <option value="">Select Operator </option>
+        <option value="==">Equals to (=)</option>
+          <option value="<">Less than (<)</option>
+          <option value=">">Greater than (>)</option>
+          <option value="<=">Less than equal to (<=)</option>
+          <option value=">=">Greater than equal to (>=)</option>
+    </select> <br>
+      &nbsp;  &nbsp;  &nbsp;  Count:  <input type="text" data-toggle="tooltip" title="Enter numbers only" placeholder="Enter Count Limit" name="match_field_count_name" id="match_field_count"/> &nbsp;  &nbsp;
+     Email:<input type="text" data-toggle="tooltip" title="user@domain.com" placeholder="Enter Email " name="email_name1" id="email1" class="rest_dv"/> <br>
+    &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp; SMS:<input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_sms_name1" placeholder="Enter mobile no. " id="sms1" class="rest_dv" />
+    Call:<input type="text" data-toggle="tooltip" title="Use numbers only" name="contact_call_name1" placeholder="Enter mobile no. " id="call1" class="rest_dv" /> <br>
+  
+    Severity:<input type="radio" name="severity" id="low" value="low">
+            <label for="low">Low</label>
+            <input type="radio" name="severity" id="moderate" value="moderate">
+            <label for="moderate">Moderate</label>
+            <input type="radio" name="severity" id="high" value="high" checked>
+            <label for="high">High</label> <br>
+    Notification status:  <select name="Notification_status" id="Notification_status" placeholder="active">
+        <option value="">Notification Status </option>
+        <option value="active">active</option>
+          <option value="inactive"> inactive</option> <br> <br>
+      <input type="submit" data-toggle="tooltip" title="Alert will be edited" value="submit"> 
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+</div>
